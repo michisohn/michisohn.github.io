@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+    <body>
+        <h1>PHP Quiz</h1>
+    
+        <div class="question">
+            <p>1. What does PHP stand for?</p>
+            <button class="option" data-correct="false">A) Personal Home Page</button>
+            <button class="option" data-correct="true">B) PHP: Hypertext Preprocessor</button>
+            <button class="option" data-correct="false">C) Preprocessed Hypertext Page</button>
+            <button class="option" data-correct="false">D) Programmed HTML Page</button>
+        </div>
+    
+        <div class="question">
+            <p>2. Which of the following is the correct way to start a PHP block of code?</p>
+            <button class="option" data-correct="true">A) &lt;?php&gt;</button>
+            <button class="option" data-correct="false">B) &lt;php&gt;</button>
+            <button class="option" data-correct="false">C) &lt;?&gt;</button>
+            <button class="option" data-correct="false">D) &lt;script type="php"&gt;</button>
+        </div>
+    
+        <div class="question">
+            <p>3. How do you output "Hello World" in PHP?</p>
+            <button class="option" data-correct="true">A) echo "Hello World";</button>
+            <button class="option" data-correct="true">B) print "Hello World";</button>
+            <button class="option" data-correct="false">C) printf("Hello World");</button>
+            <button class="option" data-correct="false">D) Both A and B are correct.</button>
+        </div>
+    
+        <div class="question">
+            <p>4. Which superglobal variable is used to access form data sent via POST method in PHP?</p>
+            <button class="option" data-correct="false">A) $_GET</button>
+            <button class="option" data-correct="true">B) $_POST</button>
+            <button class="option" data-correct="false">C) $_REQUEST</button>
+            <button class="option" data-correct="false">D) $_FORM</button>
+        </div>
+    
+        <div class="question">
+            <p>5. What is the correct way to create a function in PHP?</p>
+            <button class="option" data-correct="true">A) function myFunction() {}</button>
+            <button class="option" data-correct="false">B) new function myFunction() {}</button>
+            <button class="option" data-correct="false">C) create myFunction() {}</button>
+            <button class="option" data-correct="false">D) def myFunction() {}</button>
+        </div>
+    
+        <script>
+            document.querySelectorAll('.option').forEach(button => {
+                button.addEventListener('click', () => {
+                    const correct = button.getAttribute('data-correct') === 'true';
+                    button.classList.add(correct ? 'correct' : 'incorrect');
+                });
+            });
+        </script>
+    </body>
+    </html>
+    
