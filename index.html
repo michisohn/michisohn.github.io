@@ -1,43 +1,67 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> PHP Tutorial </title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-
+    <title>John Doe's Portfolio</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Why Sarah Bugg is a Bully</h1>
+            <p>Official Website</p>
+        </div>
+    </header>
 
-<body style = "background-color: black">
-    <h1 style=" color: white;"> WELCOME STEFAN </h1>
-    <hr>
-    <p style="color: white;"> This Website will prepare you for the role as <b>CTO</b> of 
-        <a href = "https://www.swissroom.app/home" target = _blank title = "airbnb on steroids">
-            Swissroom
-        </a>
-        by teaching you the basics of PHP.</p>
-    <p style = "color: white;"> If you have any questions along the way, please contact my
-        <a href = "mailto:michael.burch@student.ch" target = _self title = "mail me you lil bitch">
-            mail
-        </a>
-    <p style="color: white;"> <b> Enjoy!</b></p>
-    <hr>
-    <br>
-    <br>
-    <br>
-    <a href = "https://de.wikipedia.org/wiki/PHP" target = _blank title = "take me to wikipedia">
-        <img src = "PHP-logo.svg.png" height = 100>
-    </a> 
-    <h1 style=" color: white;"> THE COMPLETE TUTORIAL </h1>
-    <br>
-    <a href="Q1.html" class="button">Start</a>
-    <br>  
-    <p style="color: white;"> But before we start; using the swissroom website as a iframe in html should not be possible for obvious security reasons - shame on those indians </p>
-    <br>  
-    <iframe src="https://www.swissroom.app/home" height="500" width="500">
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="top5reasons.html">Top 5 Reasons</a></li>
+                <li><a href= "counterattackimages.html">Counter Attack Images</a></li>
+            </ul>
+        </div>
+    </nav>
 
+    <section id="about" class="container">
+        <h2>About</h2>
+        <p> Myself and countless other people around the world have encountered Sarah Bugg and her <b>toxic friendship patterns</b> - which amongst others include <b>cyber bullying</b>. This Website is dedicated to finally expose her.</p>
+        <figure>
+            <img src="profilepic.JPG" class="profile-image" >
+            <figcaption><b>Michael Burch</b><br>Former friend, survivor and author of this page </figcaption>
+        </figure>
+    </section>
+
+    <section id="futureprojects" class="container">
+        <h2>Future Projects</h2>
+        <div class="project-grid">
+            <article>
+                <h3>Bake Sale: Fundraiser against comparisons with camels</h3>
+                <p>Creating awarness against this vicious bullying technique and selling cake to raise funds for victims</p>
+            </article>
+            <article>
+                <h3>Political Initiative: Banning all incoming flights from Portugal</h3>
+                <p>Collecting signatures for the indefinite termination of all incoming flights from Portugal - Spanish people are more fun anyways</p>
+            </article>
+            <article>
+                <h3>Hackathon: Hack Sarah Bugg Moms iCloud</h3>
+                <p>Use your hacking skills and gain access to the moms iCloud and expose Sarah Bugg using embarassing pictures of her as a kid</p>
+            </article>
+        </div>
+    </section>
+
+    <section id="contact" class="container">
+        <h2>Contact</h2>
+        <p>Email: stopssarahbugg@gmail.com</p>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© stopsarahbugg - All rights reserved</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
-
-
 </html>
