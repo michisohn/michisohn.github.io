@@ -5,6 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>E-chat</title>
 <link rel="stylesheet" href="styles.css">
+<script>
+  // Wait for the DOM to load
+  document.addEventListener('DOMContentLoaded', function () {
+    var buttons = document.querySelectorAll('.button');
+
+    buttons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        // Remove the 'active' class from all buttons
+        buttons.forEach(function(btn) {
+          btn.classList.remove('active');
+        });
+        
+        // Add the 'active' class to the clicked button
+        this.classList.add('active');
+      });
+    });
+  });
+</script>
 </head>
 <body>
 
