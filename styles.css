@@ -195,3 +195,15 @@ body {
   background-color: #d32f2f; /* Red color */
   color: white; /* White text */
 }
+
+footer {
+  position: fixed; /* or 'absolute' if you want it to be at the bottom of the content */
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #333; /* dark background for visibility */
+  color: white; /* light text color */
+  text-align: center;
+  padding: 10px 0;
+}
+
