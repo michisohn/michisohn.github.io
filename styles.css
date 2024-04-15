@@ -15,9 +15,11 @@ body {
   font-size: 2rem;
   font-weight: bold;
   position: fixed;
-  top: 1rem;
-  left: 1rem;
+  top: 50px; /* Adjust this value if needed */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Shift it back by half of its own width to truly center it */
 }
+
 
 .main-content {
   text-align: center;
