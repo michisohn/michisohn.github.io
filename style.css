@@ -1,0 +1,71 @@
+/* Use Flexbox to center the container both horizontally and vertically */
+body {
+    display: flex;                /* enables flex layout */
+    justify-content: center;      /* center horizontally */
+    align-items: center;          /* center vertically */
+    flex-direction: column;       /* keep content stacked vertically if needed */
+    
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    
+    /* Background color and two images */
+    background-color: #f0f0f0;
+    background-image: url('ale.png'), url('mich.png');
+    background-repeat: no-repeat, no-repeat;
+    
+    /* Position each image on opposite sides */
+    background-position: left center, right center;
+    
+    /*
+      Scale each image to occupy half the screen width (50%) and 100% of its height.
+      This ensures they meet in the middle without overlapping.
+      Adjust as needed (e.g., cover, contain, or different percentages).
+    */
+    background-size: 50% 100%, 50% 100%;
+  }
+  
+  /* The container for the title and counter */
+  .container {
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  
+  
+  /* Style the heading */
+  h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  /* Style the counter display */
+  #counter {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .tate-container img {
+    position: absolute;
+    top: 500px;      /* Adjust the vertical position */
+    left: 100px;    /* Adjust the horizontal position */
+    width: 150px;
+    height: 250px;
+    border-color: red;
+    border-style: dotted;
+  }
+
+  .masculine-text {
+    position: absolute;
+    top: 150px;      /* Adjust the vertical position */
+    left: 750px;    /* Adjust the horizontal position */
+    font-size: 50px;
+    color: blue;
+    font-style: oblique;
+  }
+  
