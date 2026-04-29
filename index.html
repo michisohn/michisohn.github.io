@@ -38,9 +38,7 @@
           <font face="Comic Sans MS" size="5" color="#00ff00"><b>[ NAVIGATION ]</b></font>
           <br><br>
           <font face="Times New Roman" size="4">
-            <a href="#projects">[ MY PROJECTS ]</a>
-            &nbsp;&nbsp;|&nbsp;&nbsp;
-            <a href="#blog">[ BLOG ]</a>
+            <a href="#projects">[ PROJECTS ]</a>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <a href="https://www.linkedin.com/in/burch-michael/" target="_blank">[ LINKEDIN ]</a>
             &nbsp;&nbsp;|&nbsp;&nbsp;
@@ -56,7 +54,7 @@
   <!-- PROJECTS -->
   <a name="projects"></a>
   <center>
-    <font face="Comic Sans MS" size="6" color="#ff6600"><b>~~~ MY PROJECTS ~~~</b></font>
+    <font face="Comic Sans MS" size="6" color="#ff6600"><b>~~~ MY CURRENT PROJECTS ~~~</b></font>
   </center>
   <br>
   <center>
@@ -64,35 +62,32 @@
       <tr>
         <td>
           <font face="Times New Roman" size="4" color="#ffffff">
-            <b>Coming Soon!!!</b>
+            <b><font color="#ffff00">&raquo;&raquo; SwissAIJob.ch &laquo;&laquo;</font></b>
             <br><br>
-            I am working very hard on some cool stuff. Check back later!!!
+            A job board for AI roles in Switzerland, built because every existing one was incomplete or stale. Covers industry and academia, including non-tech employers that hire for AI. Scrapers run every 5 days, expired roles are deactivated automatically, and there's no signup. Clicking a listing takes you straight to the employer's own apply page. Listings are sourced exclusively from company and university websites, never aggregators.
             <br><br>
-            <span class="blink"><font color="#ffff00">*** UNDER CONSTRUCTION ***</font></span>
+            The platform is agent-run: AI agents add and repair scrapers as new employers appear, so coverage expands without manual upkeep. Salaries are LLM estimates based on company, role, seniority, and sector, so treat them as a rough signal.
+            <br><br>
+            <font face="Courier New" size="3">
+              &gt;&gt; <a href="https://www.swissaijob.ch" target="_blank">www.swissaijob.ch</a> &lt;&lt;
+            </font>
           </font>
         </td>
       </tr>
-    </table>
-  </center>
-
-  <hr color="#ffff00" size="4">
-
-  <!-- BLOG -->
-  <a name="blog"></a>
-  <center>
-    <font face="Comic Sans MS" size="6" color="#ff6600"><b>~~~ MY BLOG ~~~</b></font>
-  </center>
-  <br>
-  <center>
-    <table border="3" cellpadding="12" bgcolor="#000044" width="80%">
       <tr>
         <td>
           <font face="Times New Roman" size="4" color="#ffffff">
-            <b>No posts yet...</b>
+            <b><font color="#ffff00">&raquo;&raquo; Master Thesis: Serialization Strategies for RAG Recommendation Systems &laquo;&laquo;</font></b>
+            <br>
+            <font size="3" color="#aaaaaa"><i>(preliminary results)</i></font>
             <br><br>
-            Stay tuned!! I will write about lots of interesting things very soon!!
+            Comparing six serialization strategies (labeled fields, JSON, Markdown, HTML, instruction-style, LLM summary) for embedding structured records, evaluated across two embedding models (OpenAI text-embedding-3-small, Google text-multilingual-embedding-002), two retrieval modes, and 24 LLM-judged eval cases on NDCG@5, MRR, Precision@5, Hit Rate@5, and latency.
             <br><br>
-            <span class="blink"><font color="#ffff00">*** COMING SOON ***</font></span>
+            LLM-summarized inputs lead in Profile Mode with OpenAI (NDCG@5 0.958, Precision@5 0.875), while instruction-style serialization wins with Google. Differences between strategies are small at the top of the ranking but compound on Precision@5. HTML serialization is consistently the fastest at no measurable quality cost. Query Mode underperforms Profile Mode across all configurations, suggesting short queries don't carry enough signal for dense retrieval alone.
+            <br><br>
+            <font face="Courier New" size="3">
+              &gt;&gt; <a href="charts.html">View the charts</a> &lt;&lt;
+            </font>
           </font>
         </td>
       </tr>

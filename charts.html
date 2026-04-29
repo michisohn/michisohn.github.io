@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Metrics — run-20260420-merged-s4</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; color: #333; padding: 32px; }
+    h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 4px; }
+    .meta { font-size: 0.85rem; color: #666; margin-bottom: 32px; }
+    .section-title { font-size: 1rem; font-weight: 600; color: #444; margin: 32px 0 12px; border-bottom: 2px solid #dee2e6; padding-bottom: 6px; }
+    .row { display: grid; gap: 24px; margin-bottom: 8px; }
+    .row-2 { grid-template-columns: 1fr 1fr; }
+    .row-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .chart-box { background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; }
+    .chart-box h2 { font-size: 0.9rem; font-weight: 600; color: #555; margin-bottom: 16px; text-align: center; }
+    canvas { max-height: 280px; }
+  </style>
+</head>
+<body>
+  <h1>Experiment run-20260420-merged-s4 — Metrics Overview</h1>
+  <p class="meta">scorer: llm_gpt4o_mini &nbsp;·&nbsp; 24 eval cases &nbsp;·&nbsp; strategies: S1–S6 &nbsp;·&nbsp; models: OpenAI text-embedding-3-small, Google text-multilingual-embedding-002</p>
+
+  <div class="section-title">NDCG@5</div>
+  <div class="row row-2">
+    <div class="chart-box"><h2>Profile Mode</h2><canvas id="ndcg5-profile"></canvas></div>
+    <div class="chart-box"><h2>Query Mode</h2><canvas id="ndcg5-query"></canvas></div>
+  </div>
+
+  <div class="section-title">MRR (Mean Reciprocal Rank)</div>
+  <div class="row row-2">
+    <div class="chart-box"><h2>Profile Mode</h2><canvas id="mrr-profile"></canvas></div>
+    <div class="chart-box"><h2>Query Mode</h2><canvas id="mrr-query"></canvas></div>
+  </div>
+
+  <div class="section-title">Average Score@5 (1–5 scale)</div>
+  <div class="row row-2">
+    <div class="chart-box"><h2>Profile Mode</h2><canvas id="avg5-profile"></canvas></div>
+    <div class="chart-box"><h2>Query Mode</h2><canvas id="avg5-query"></canvas></div>
+  </div>
+
+  <div class="section-title">Strategy Comparison — Radar (Profile Mode)</div>
+  <div class="row row-2">
+    <div class="chart-box"><h2>OpenAI text-embedding-3-small</h2><canvas id="radar-openai"></canvas></div>
+    <div class="chart-box"><h2>Google text-multilingual-embedding-002</h2><canvas id="radar-google"></canvas></div>
+  </div>
+
+  <div class="section-title">Average Score by Criterion</div>
+  <div class="row row-2">
+    <div class="chart-box"><h2>Profile Mode — OpenAI</h2><canvas id="crit-profile-openai"></canvas></div>
+    <div class="chart-box"><h2>Profile Mode — Google</h2><canvas id="crit-profile-google"></canvas></div>
+  </div>
+  <div class="row row-2">
+    <div class="chart-box"><h2>Query Mode — OpenAI</h2><canvas id="crit-query-openai"></canvas></div>
+    <div class="chart-box"><h2>Query Mode — Google</h2><canvas id="crit-query-google"></canvas></div>
+  </div>
+
+  <div class="section-title">Precision@5 (share of top-5 topics scoring ≥ 4)</div>
+  <div class="row row-2">
+    <div class="chart-box"><h2>Profile Mode</h2><canvas id="prec5-profile"></canvas></div>
+    <div class="chart-box"><h2>Query Mode</h2><canvas id="prec5-query"></canvas></div>
+  </div>
+
+  <div class="section-title">Hit Rate@5 (share of students with at least one topic scoring ≥ 4.5)</div>
+  <div class="row row-2">
+    <div class="chart-box"><h2>Profile Mode</h2><canvas id="hr5-profile"></canvas></div>
+    <div class="chart-box"><h2>Query Mode</h2><canvas id="hr5-query"></canvas></div>
+  </div>
+
+  <div class="section-title">Retrieval Latency</div>
+  <div class="row row-2">
+    <div class="chart-box"><h2>Profile Mode</h2><canvas id="lat-profile"></canvas></div>
+    <div class="chart-box"><h2>Query Mode</h2><canvas id="lat-query"></canvas></div>
+  </div>
+
+  <div class="section-title">Score Distributions</div>
+  <div class="row row-3">
+    <div class="chart-box"><h2>All Scored Pairs — Profile vs Query</h2><canvas id="dist-total"></canvas></div>
+    <div class="chart-box"><h2>Retrieved Top-5 — Profile vs Query Mode</h2><canvas id="dist-mode"></canvas></div>
+    <div class="chart-box"><h2>Retrieved Top-5 — OpenAI vs Google (Profile)</h2><canvas id="dist-model"></canvas></div>
+  </div>
+
+<script>
+const labels   = ["S1 Labeled","S2 JSON","S3 Markdown","S4 HTML","S5 Instruction","S6 LLM Summary"];
+const data     = {"ndcg5_profile_openai":[0.9356763269123002,0.9350202671958026,0.9370780397691253,0.9343498970431746,0.9160022543958829,0.9578601586429487],"ndcg5_profile_google":[0.9102313343959341,0.8931688483128783,0.8899290740188114,0.8951384715876701,0.9375079077571641,0.9287079538709714],"ndcg5_query_openai":[0.8928986438082133,0.8858824538463012,0.8771931544594879,0.897183075038189,0.8873408134349935,0.897846224788164],"ndcg5_query_google":[0.8908330539273521,0.8790433832133121,0.8876470212084615,0.8947447733470124,0.8739185645255354,0.8756456473592836],"mrr_profile_openai":[0.9097222222222222,0.8888888888888888,0.9166666666666666,0.9375,0.8194444444444445,0.9375],"mrr_profile_google":[0.9041666666666667,0.857638888888889,0.813888888888889,0.751388888888889,0.8958333333333334,0.9249999999999999],"mrr_query_openai":[0.24097222222222223,0.30248015873015877,0.29067460317460314,0.31597222222222227,0.318452380952381,0.22903439153439153],"mrr_query_google":[0.35486111111111107,0.29379960317460324,0.33720238095238103,0.3267857142857143,0.3295138888888889,0.22620701058201056],"avg5_profile_openai":[4.363083333333334,4.4093333333333335,4.366499999999999,4.3756666666666675,4.368583333333333,4.543500000000001],"avg5_profile_google":[4.279333333333334,4.195916666666666,4.174,4.179833333333334,4.4783333333333335,4.3925833333333335],"avg5_query_openai":[2.9804999999999997,3.020916666666666,2.99025,3.016,2.9955833333333337,2.9865],"avg5_query_google":[3.07075,3.0241666666666664,3.0434166666666673,3.0192499999999995,3.0465,2.8900833333333327],"prec5_profile_openai":[0.7916666666666666,0.7833333333333337,0.75,0.7916666666666669,0.7666666666666669,0.875],"prec5_profile_google":[0.7416666666666668,0.7000000000000001,0.6833333333333335,0.6666666666666666,0.8583333333333333,0.8250000000000002],"prec5_query_openai":[0.075,0.11666666666666668,0.11666666666666668,0.10833333333333335,0.08333333333333333,0.08333333333333336],"prec5_query_google":[0.13333333333333333,0.11666666666666668,0.125,0.11666666666666665,0.13333333333333336,0.06666666666666667],"hr5_profile_openai":[0.875,0.9583333333333334,0.9583333333333334,0.875,0.9166666666666666,0.9583333333333334],"hr5_profile_google":[0.9583333333333334,0.8333333333333334,0.9166666666666666,0.875,0.9583333333333334,0.875],"hr5_query_openai":[0.16666666666666666,0.25,0.2916666666666667,0.25,0.20833333333333334,0.08333333333333333],"hr5_query_google":[0.25,0.16666666666666666,0.2916666666666667,0.25,0.2916666666666667,0.08333333333333333],"lat_profile_openai":[58.666666666666664,53.75,49.375,43.791666666666664,49.791666666666664,47.583333333333336],"lat_profile_google":[32.958333333333336,32.166666666666664,31.833333333333332,21.708333333333332,32.166666666666664,31.25],"lat_query_openai":[47.166666666666664,45.875,45.916666666666664,35.583333333333336,48.041666666666664,44.458333333333336],"lat_query_google":[33.208333333333336,32.291666666666664,32.333333333333336,18.833333333333332,32.666666666666664,32.291666666666664]};
+const radar    = {"openai":[[0.9356763269123002,0.9097222222222222,0.8407708333333335,0.7916666666666666,0.875],[0.9350202671958026,0.8888888888888888,0.8523333333333334,0.7833333333333337,0.9583333333333334],[0.9370780397691253,0.9166666666666666,0.8416249999999998,0.75,0.9583333333333334],[0.9343498970431746,0.9375,0.8439166666666669,0.7916666666666669,0.875],[0.9160022543958829,0.8194444444444445,0.8421458333333331,0.7666666666666669,0.9166666666666666],[0.9578601586429487,0.9375,0.8858750000000002,0.875,0.9583333333333334]],"google":[[0.9102313343959341,0.9041666666666667,0.8198333333333334,0.7416666666666668,0.9583333333333334],[0.8931688483128783,0.857638888888889,0.7989791666666666,0.7000000000000001,0.8333333333333334],[0.8899290740188114,0.813888888888889,0.7935000000000001,0.6833333333333335,0.9166666666666666],[0.8951384715876701,0.751388888888889,0.7949583333333334,0.6666666666666666,0.875],[0.9375079077571641,0.8958333333333334,0.8695833333333334,0.8583333333333333,0.9583333333333334],[0.9287079538709714,0.9249999999999999,0.8481458333333334,0.8250000000000002,0.875]]};
+const crit     = {"profile_openai":{"research_area":[4.0875,3.995833333333333,3.8666666666666667,3.904166666666667,4.129166666666666,4.308333333333334],"skills":[4.394444444444445,4.4222222222222225,4.277777777777778,4.2555555555555555,4.427777777777778,4.411111111111111],"field_of_study":[4.547826086956522,4.521739130434782,4.369565217391305,4.430434782608696,4.6,4.647826086956521],"level":[4.429166666666666,4.458333333333333,4.454166666666667,4.2875,4.408333333333333,4.5875],"university":[4.1,4.466666666666667,4.416666666666667,4.464435146443515,4.083333333333333,4.483333333333333]},"profile_google":{"research_area":[3.8375,3.7708333333333335,3.8,3.8041666666666667,4.183333333333334,4.383333333333334],"skills":[4.033333333333333,4.105555555555555,4.011111111111111,4.0777777777777775,4.316666666666666,4.45],"field_of_study":[4.317391304347826,4.343478260869565,4.3,4.360869565217391,4.665217391304348,4.591304347826087],"level":[4.233333333333333,4.433333333333334,4.216666666666667,4.279166666666667,4.270833333333333,4.516666666666667],"university":[4.316666666666666,4.45,4.416666666666667,4.466666666666667,4.129707112970712,3.99581589958159]},"query_openai":{"research_area":[3.2333333333333334,3.066666666666667,3.0208333333333335,3.0083333333333333,3.0166666666666666,3.5541666666666667],"skills":[3.7,3.5055555555555555,3.4444444444444446,3.5055555555555555,3.3555555555555556,3.816666666666667],"field_of_study":[3.643478260869565,3.4956521739130433,3.4782608695652173,3.417391304347826,3.4,4],"level":[4.295833333333333,4.320833333333334,4.354166666666667,4.316666666666666,4.2,4.366666666666666],"university":[3.283333333333333,3.5166666666666666,3.3765690376569037,3.45,2.99163179916318,4.083333333333333],"query_fit":[2.2125,2.2958333333333334,2.3291666666666666,2.3403361344537816,2.5125,1.9291666666666667]},"query_google":{"research_area":[3.129166666666667,2.9625,2.933333333333333,2.8958333333333335,2.941666666666667,3.1958333333333333],"skills":[3.5388888888888888,3.5,3.433333333333333,3.411111111111111,3.3555555555555556,3.6666666666666665],"field_of_study":[3.5782608695652174,3.491304347826087,3.391304347826087,3.3869565217391306,3.3434782608695652,3.582608695652174],"level":[4.041666666666667,4.075,4.054166666666666,4.054166666666666,3.8958333333333335,4.079166666666667],"university":[3.134453781512605,3.2333333333333334,3.2184873949579833,3.426778242677824,3.168067226890756,3.0418410041841004],"query_fit":[2.466666666666667,2.5208333333333335,2.4833333333333334,2.4533898305084745,2.6041666666666665,2.2375]}};
+const dist     = {"total_profile":[39,71,147,147,243,218,373,479],"total_query":[22,75,203,318,251,112,36,19],"mode_profile":[2,10,51,103,273,290,750,1401],"mode_query":[29,153,507,799,734,404,143,105],"model_openai":[1,2,11,31,126,165,405,699],"model_google":[1,8,40,72,147,125,345,702]};
+const binLabels = ["1.0–1.5","1.5–2.0","2.0–2.5","2.5–3.0","3.0–3.5","3.5–4.0","4.0–4.5","4.5–5.0"];
+
+const OPENAI  = '#4e79a7';
+const GOOGLE  = '#f28e2b';
+const PROFILE = '#59a14f';
+const QUERY   = '#e15759';
+const S_COLORS = ["#4e79a7","#f28e2b","#59a14f","#9c755f","#e15759","#b07aa1","#76b7b2","#edc948","#ff9da7"];
+const C_RA    = '#4e79a7';
+const C_SK    = '#f28e2b';
+const C_FOS   = '#59a14f';
+const C_LV    = '#e15759';
+const C_UN    = '#b07aa1';
+const C_QF    = '#76b7b2';
+
+function barChart(id, datasets, yMin, yMax, yLabel) {
+  new Chart(document.getElementById(id), {
+    type: 'bar',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 16, font: { size: 11 } } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 0, minRotation: 0, autoSkip: false } },
+        y: {
+          min: yMin, max: yMax,
+          title: { display: !!yLabel, text: yLabel, font: { size: 11 } },
+          ticks: { font: { size: 11 }, callback: v => typeof v === 'number' && v < 10 ? v.toFixed(2) : v },
+          grid: { color: '#eee' }
+        }
+      }
+    }
+  });
+}
+
+function critChart(id, critData, yMin, hasQueryFit) {
+  const datasets = [
+    { label: 'Research Area',  data: critData.research_area,  backgroundColor: C_RA,  borderRadius: 4 },
+    { label: 'Skills',         data: critData.skills,         backgroundColor: C_SK,  borderRadius: 4 },
+    { label: 'Field of Study', data: critData.field_of_study, backgroundColor: C_FOS, borderRadius: 4 },
+    { label: 'Level',          data: critData.level,          backgroundColor: C_LV,  borderRadius: 4 },
+    { label: 'University',     data: critData.university,     backgroundColor: C_UN,  borderRadius: 4 },
+  ];
+  if (hasQueryFit) datasets.push(
+    { label: 'Query Fit', data: critData.query_fit, backgroundColor: C_QF, borderRadius: 4 }
+  );
+  barChart(id, datasets, yMin, 5.0, 'Avg Score');
+}
+
+function distChart(id, datasets) {
+  new Chart(document.getElementById(id), {
+    type: 'bar',
+    data: { labels: binLabels, datasets },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 16, font: { size: 11 } } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: 'Number of pairs', font: { size: 11 } },
+          ticks: { font: { size: 11 }, precision: 0 },
+          grid: { color: '#eee' }
+        }
+      }
+    }
+  });
+}
+
+// NDCG@5
+barChart('ndcg5-profile', [
+  { label: 'OpenAI', data: data.ndcg5_profile_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: data.ndcg5_profile_google, backgroundColor: GOOGLE, borderRadius: 4 },
+], 0.83, 1.0, 'NDCG@5');
+
+barChart('ndcg5-query', [
+  { label: 'OpenAI', data: data.ndcg5_query_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: data.ndcg5_query_google, backgroundColor: GOOGLE, borderRadius: 4 },
+], 0.83, 1.0, 'NDCG@5');
+
+// MRR
+barChart('mrr-profile', [
+  { label: 'OpenAI', data: data.mrr_profile_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: data.mrr_profile_google, backgroundColor: GOOGLE, borderRadius: 4 },
+], 0.73, 1.0, 'MRR');
+
+barChart('mrr-query', [
+  { label: 'OpenAI', data: data.mrr_query_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: data.mrr_query_google, backgroundColor: GOOGLE, borderRadius: 4 },
+], 0.18000000000000002, 1.0, 'MRR');
+
+// Avg Score@5
+barChart('avg5-profile', [
+  { label: 'OpenAI', data: data.avg5_profile_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: data.avg5_profile_google, backgroundColor: GOOGLE, borderRadius: 4 },
+], 3.9, 5.0, 'Avg Score@5');
+
+barChart('avg5-query', [
+  { label: 'OpenAI', data: data.avg5_query_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: data.avg5_query_google, backgroundColor: GOOGLE, borderRadius: 4 },
+], 2.65, 5.0, 'Avg Score@5');
+
+// Radar charts
+const radarAxes = ['NDCG@5', 'MRR', 'Avg Score', 'Precision@5', 'Hit Rate@5'];
+
+function radarChart(id, radarData) {
+  new Chart(document.getElementById(id), {
+    type: 'radar',
+    data: {
+      labels: radarAxes,
+      datasets: labels.map((name, i) => ({
+        label: name,
+        data: radarData[i],
+        borderColor: S_COLORS[i],
+        backgroundColor: S_COLORS[i] + '26',
+        borderWidth: 2,
+        pointRadius: 3,
+      }))
+    },
+    options: {
+      responsive: true,
+      scales: {
+        r: {
+          min: 0.5499999999999999, max: 1,
+          ticks: { stepSize: 0.05, font: { size: 10 } },
+          pointLabels: { font: { size: 11 } },
+          grid: { color: '#ddd' },
+          angleLines: { color: '#ddd' }
+        }
+      },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 14, font: { size: 11 } } }
+      }
+    }
+  });
+}
+
+radarChart('radar-openai', radar.openai);
+radarChart('radar-google', radar.google);
+
+// Criterion breakdown
+critChart('crit-profile-openai', crit.profile_openai, 3.65, false);
+critChart('crit-profile-google', crit.profile_google, 3.65, false);
+critChart('crit-query-openai',   crit.query_openai,   1.65,   true);
+critChart('crit-query-google',   crit.query_google,   1.65,   true);
+
+// Precision@5
+barChart('prec5-profile', [
+  { label: 'OpenAI', data: data.prec5_profile_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: data.prec5_profile_google, backgroundColor: GOOGLE, borderRadius: 4 },
+], 0.63, 1.0, 'Precision@5');
+
+barChart('prec5-query', [
+  { label: 'OpenAI', data: data.prec5_query_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: data.prec5_query_google, backgroundColor: GOOGLE, borderRadius: 4 },
+], 0.030000000000000002, 1.0, 'Precision@5');
+
+// Hit Rate@5
+barChart('hr5-profile', [
+  { label: 'OpenAI', data: data.hr5_profile_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: data.hr5_profile_google, backgroundColor: GOOGLE, borderRadius: 4 },
+], 0.78, 1.0, 'Hit Rate@5');
+
+barChart('hr5-query', [
+  { label: 'OpenAI', data: data.hr5_query_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: data.hr5_query_google, backgroundColor: GOOGLE, borderRadius: 4 },
+], 0.030000000000000002, 1.0, 'Hit Rate@5');
+
+// Latency
+barChart('lat-profile', [
+  { label: 'OpenAI', data: data.lat_profile_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: data.lat_profile_google, backgroundColor: GOOGLE, borderRadius: 4 },
+], 0, null, 'ms');
+
+barChart('lat-query', [
+  { label: 'OpenAI', data: data.lat_query_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: data.lat_query_google, backgroundColor: GOOGLE, borderRadius: 4 },
+], 0, null, 'ms');
+
+// Score distributions
+distChart('dist-total', [
+  { label: 'Profile', data: dist.total_profile, backgroundColor: PROFILE, borderRadius: 4 },
+  { label: 'Query',   data: dist.total_query,   backgroundColor: QUERY,   borderRadius: 4 },
+]);
+
+distChart('dist-mode', [
+  { label: 'Profile', data: dist.mode_profile, backgroundColor: PROFILE, borderRadius: 4 },
+  { label: 'Query',   data: dist.mode_query,   backgroundColor: QUERY,   borderRadius: 4 },
+]);
+
+distChart('dist-model', [
+  { label: 'OpenAI', data: dist.model_openai, backgroundColor: OPENAI, borderRadius: 4 },
+  { label: 'Google', data: dist.model_google, backgroundColor: GOOGLE, borderRadius: 4 },
+]);
+</script>
+</body>
+</html>
