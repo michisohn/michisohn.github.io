@@ -100,6 +100,23 @@
           </font>
         </td>
       </tr>
+      <tr>
+        <td>
+          <font face="Times New Roman" size="4" color="#ffffff">
+            <b><font color="#ffff00">&raquo;&raquo; Time-to-Fill: Survival Analysis of Swiss AI Job Listings with Cox PH, Weibull AFT, and XGBoost AFT &laquo;&laquo;</font></b>
+            <br>
+            <font size="3" color="#aaaaaa"><i>(preliminary, 5 weeks of data)</i></font>
+            <br><br>
+            Compares four survival models (Kaplan-Meier, Cox PH, Weibull AFT, XGBoost AFT) on how long an AI/ML listing stays open on SwissAIJob.ch. 511 listings, 161 closed during observation, 350 right-censored, 37-day window. Structured features (sector, employer type, location, salary, employment type) plus job-description embeddings (OpenAI text-embedding-3-small compressed to 5 PCA components), with SHAP for per-listing interpretability. 5-fold cross-validation, stratified on the event indicator.
+            <br><br>
+            XGBoost AFT narrowly wins on Harrell's C-index (0.688 &plusmn; 0.036) over Weibull AFT (0.686 &plusmn; 0.058) and Cox PH (0.684 &plusmn; 0.060). The three covariate models are tied within one standard deviation but lift the C-index roughly 0.19 above the no-covariate baseline. Top SHAP driver is company_corporate: corporate listings churn ~2.8&times; faster than startups (7.0 vs 19.8 day median), with three text-embedding components and loc_Zurich rounding out the top features. Cox stays in the comparison because XGBoost AFT and Weibull AFT can't handle left-truncation natively, and 32% of listings were posted before our first scrape. The model ranks listings well but doesn't predict exact day counts, and it measures listing lifetime (removal), not confirmed hires.
+            <br><br>
+            <font face="Courier New" size="3">
+              &gt;&gt; <a href="timetofill.html">Read the article</a> &lt;&lt;
+            </font>
+          </font>
+        </td>
+      </tr>
     </table>
   </center>
 
